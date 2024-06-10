@@ -22,35 +22,33 @@ let didWin = false;
 
 function game() {
     checkGameOver();
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-    
-    if(!isGameOver) {
-        enemyController.draw(ctx);
-        player.draw(ctx);
-        playerBulletController.draw(ctx);
-        enemyBulletController.draw(ctx);
-    } else {
+    if (isGameOver) {
         displayGameOver();
+        return;
     }
+    
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    enemyController.draw(ctx);
+    player.draw(ctx);
+    playerBulletController.draw(ctx);
+    enemyBulletController.draw(ctx);
 }
 
 function displayGameOver() {
-    let text = didWin ? "Você Ganhou!" : "Game Over";
-    let textOffset = didWin ? 5 : 3.6;
-    
-    ctx.fillStyle = "white";
-    ctx.font = "35px 'Press Start 2P'";
-    ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);   
+    if (didWin) {
+        window.location.href = "vencedor.html";
+    } else {
+        window.location.href = "perdedor.html";
+    }
 }
 
 function checkGameOver() {
-    if(isGameOver) {
-        return;
-    }
-    if(enemyBulletController.collideWith(player) || enemyController.collideWith(player)) {
+    if (isGameOver) return;
+
+    if (enemyBulletController.collideWith(player) || enemyController.collideWith(player)) {
         isGameOver = true;
     }
-    if(enemyController.enemyRows.length === 0) {
+    if (enemyController.enemyRows.length === 0) {
         didWin = true;
         isGameOver = true;
     }
